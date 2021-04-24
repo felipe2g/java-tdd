@@ -21,40 +21,36 @@ import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 public class BookingServiceTest {
-	
-	@TestConfiguration
-	static class BookingServiceTestConfiguration{
-		
-		@Bean
-		public BookingService bookingService() {
-			return new BookingService();
-		}
-	}
-	
-	@Autowired
-	BookingService bookingService;
-	
-	@MockBean
-	BookingRepository bookingRepository;
-	
-	@BeforeEach
-	public void setUp() {
-		LocalDate checkIn = LocalDate.parse("2020-11-10");
-		LocalDate checkout = LocalDate.parse("2020-11-20");
-		
-		BookingModel bookingModel = new BookingModel("1", "Felipe Guimarães", checkIn, checkout, 2);
-	
-		Mockito.when(bookingRepository.findByReserveName(bookingModel.getReserveName()))
-		.thenReturn(Optional.of(bookingModel));
-	
-	}
-	
-	@Test
-	public void bookingTestServiceDaysCalculator() {
-		String name = "Felipe";
-		int days = bookingService.daysCalculatorWithDatabase(name);
-		
-		Assertions.assertEquals(days, 10);
-	}
-	
+
+    @TestConfiguration
+    static class BookingServiceTestConfiguration {
+        @Bean
+        public BookingService bookingService() {
+            return new BookingService();
+        }
+    }
+
+    @Autowired
+    BookingService bookingService;
+
+    @MockBean
+    BookingRepository bookingRepository;
+
+    @BeforeEach
+    public void setUp() {
+        LocalDate checkIn = LocalDate.parse("2020-11-10");
+        LocalDate checkOut = LocalDate.parse("2020-11-20");
+        
+        BookingModel bookingModel = new BookingModel("1", "Felipe Guimarães", checkIn, checkOut, 2);
+        Mockito.when(bookingRepository.findByReserveName(bookingModel.getReserveName()))
+        .thenReturn(Optional.of(bookingModel));
+    }
+
+    @Test
+    public void bookingTestServiceDaysCalculator() {
+        String name = "Felipe Guimarães";
+        int days = bookingService.daysCalculatorWithDatabase(name);
+        Assertions.assertEquals(days, 10);
+    }
+
 }
